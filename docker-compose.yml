@@ -1,0 +1,16 @@
+services:
+  nginx:
+    build: .
+    container_name: reverse-proxy
+
+    ports:
+      - "80:80"
+
+    restart: unless-stopped
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
