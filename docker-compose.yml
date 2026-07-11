@@ -1,7 +1,7 @@
 services:
   nginx:
     image: ghcr.io/dakardu/reverse-proxy:latest
-    container_name: reverse-proxy
+    container_name: nginx
 
     ports:
       - "80:80"
