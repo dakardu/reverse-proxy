@@ -31,3 +31,26 @@ jobs:
             - name: Push image
               run: |
                   docker push ghcr.io/${{ github.repository_owner }}/reverse-proxy:latest
+
+            - name: Copy files to OCI
+              uses: appleboy/scp-action@v0.1.7
+              with:
+                  host: ${{ secrets.OCI_HOST }}
+                  username: ${{ secrets.OCI_USER }}
+                  key: ${{ secrets.OCI_SSH_KEY }}
+                  source: "docker-compose.yml,nginx"
+                  target: "/opt/reverse-proxy"
+
+            - name: Deploy
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.OCI_HOST }}
+                  username: ${{ secrets.OCI_USER }}
+                  key: ${{ secrets.OCI_SSH_KEY }}
+                  script: |
+                      docker network inspect proxy >/dev/null 2>&1 || docker network create proxy
+
+                      cd /opt/reverse-proxy
+
+                      docker compose pull
+                      docker compose up -d

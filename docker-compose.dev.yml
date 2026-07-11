@@ -1,6 +1,6 @@
 services:
   nginx:
-    image: ghcr.io/dakardu/reverse-proxy:latest
+    build: .
     container_name: reverse-proxy
 
     ports:
