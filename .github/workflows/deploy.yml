@@ -48,9 +48,10 @@ jobs:
                   username: ${{ secrets.OCI_USER }}
                   key: ${{ secrets.OCI_SSH_KEY }}
                   script: |
-                      docker network inspect proxy >/dev/null 2>&1 || docker network create proxy
-
                       cd /opt/reverse-proxy
+
+                      echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io \
+                      -u ${{ github.actor }} \
 
                       docker compose pull
                       docker compose up -d
