@@ -11,6 +11,27 @@ services:
     networks:
       - proxy
 
+    volumes:
+      - ./nginx:/etc/nginx
+      - ./letsencrypt:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    restart: unless-stooped
+
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
+    entrypoint: >
+      sh -c "trap exit TERM;
+      while :; do
+        cerbot renew;
+        sleep 12h;
+      done"
+
 networks:
   proxy:
     name: proxy
