@@ -3,6 +3,9 @@ services:
     build: .
     container_name: reverse-proxy
 
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+
     ports:
       - "80:80"
 
