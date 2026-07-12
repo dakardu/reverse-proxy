@@ -6,7 +6,7 @@ services:
     ports:
       - "80:80"
 
-    restart: unless-stooped
+    restart: unless-stopped
 
     networks:
       - proxy
@@ -19,7 +19,7 @@ services:
   certbot:
     image: certbot/certbot:latest
     container_name: certbot
-    restart: unless-stooped
+    restart: unless-stopped
 
     volumes:
       - ./letsencrypt:/etc/letsencrypt
